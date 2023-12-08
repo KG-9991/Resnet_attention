@@ -176,15 +176,18 @@ class standard_block(nn.Module):
 
 class AttentionBlock(nn.Module):
     """creates a self attention module for skip connections"""
-    def __init__(self, in_channels):
+    def __init__(self, in_filters, out_filters, strides=1):
         super(AttentionBlock, self).__init__()
-        self.query_conv = nn.Conv2d(in_channels, in_channels // 8, kernel_size=1)
-        self.key_conv = nn.Conv2d(in_channels, in_channels // 8, kernel_size=1)
-        self.value_conv = nn.Conv2d(in_channels, in_channels, kernel_size=1)
+        #print("channnneeeelllsss:",in_filters,out_filters)
+        self.query_conv = nn.Conv2d(in_channels=in_filters, out_channels=out_filters // 8, kernel_size=1, stride=strides)
+        self.key_conv = nn.Conv2d(in_channels=in_filters, out_channels=out_filters // 8, kernel_size=1, stride=strides)
+        self.value_conv = nn.Conv2d(in_channels=in_filters, out_channels=out_filters, kernel_size=1, stride=strides)
+        self.bn_relu = batch_norm_relu_layer(num_features=in_filters)
     
     def forward(self,inputs):
         size = inputs.size()
-        #print("inout_size::",size)
+        inputs = self.bn_relu(inputs)
+        #print("input_size::",size)
         #inputs = inputs.view(*size[:2],-1)
         #print("after trans",inputs.size())
         query = self.query_conv(inputs)
@@ -193,17 +196,20 @@ class AttentionBlock(nn.Module):
         query = query.view(*size_q[:2],-1)
         #print("queeeerr:",query.size())
         keys = self.key_conv(inputs)
+        #print("keyyyy conv",keys.size())
         size_k = keys.size()
         keys = keys.view(*size_k[:2],-1)
         #print("attenstion_params:",query.size(),keys.size())
         values = self.value_conv(inputs)
+        #print("values conv",values.size())
         size_v = values.size()
         values = values.view(*size_v[:2],-1)
         attention_scores = torch.softmax(torch.bmm(query.transpose(1,2),keys), dim = 1)
         #print("scores",attention_scores.size())
         outputs = torch.bmm(values,attention_scores)
         #print("atten_out",outputs.size())
-        outputs = outputs.view(*size).contiguous()
+        outputs = outputs.view(*size_v)
+        #print("output shapppe",outputs.size())
         return outputs
 
 class bottleneck_block(nn.Module):
@@ -222,23 +228,30 @@ class bottleneck_block(nn.Module):
     def __init__(self, filters, projection_shortcut, strides, first_num_filters,resnet_first_layer=False,first_layer=False) -> None:
         super(bottleneck_block, self).__init__()
         self.projection_shortcut = projection_shortcut
+        self.attention_block = None
         self.filters = filters
         self.first_num_filters = first_num_filters
         self.upsample_input = resnet_first_layer
         self.first_layer = first_layer
         if self.projection_shortcut is not None or strides != 1:
-            print("yessss")
+            #print("yessss")
             if self.first_layer == True:
+                #print("first and stack 2,3")
                 self.projection_shortcut = nn.Sequential(nn.Conv2d(filters//2, filters,
                                                                kernel_size=1, stride=strides, bias=False))
+                self.attention_block = AttentionBlock(filters//2,filters, strides= strides)
                 #print("filters::::",filters)
             else:
                 self.projection_shortcut = nn.Sequential(nn.Conv2d(first_num_filters, filters,
                                                                kernel_size=1, stride=strides, bias=False))
+                #print("first and stack1")
+                self.attention_block = AttentionBlock(first_num_filters,filters, strides=strides)
                 #print("first_filterssss:::",first_num_filters,filters)
                 
         else:
             self.projection_shortcut = nn.Sequential()
+            #print("normalll")
+            self.attention_block = AttentionBlock(filters,filters)
         
         """self.upsample_input = nn.Sequential(nn.Conv2d(first_num_filters, 64,
                                                                kernel_size=1, stride=1, bias=False), 
@@ -256,7 +269,8 @@ class bottleneck_block(nn.Module):
         self.bn_relu3 = batch_norm_relu_layer(num_features=first_num_filters, eps=1e-5, momentum=0.997)
         self.conv3 = nn.Conv2d(in_channels=first_num_filters,out_channels=filters,kernel_size=1, stride=1, padding=0, bias=False)
         self.dropout = nn.Dropout(p=0.1)
-        self.attention_block = AttentionBlock(filters)
+        #print("filterssss:",first_num_filters,filters)
+        #self.attention_block = AttentionBlock(first_num_filters,filters)
 
 
 
@@ -299,7 +313,8 @@ class bottleneck_block(nn.Module):
         #print("conv333",cnv_ot3.size())
         #print("__cvn_ot2__",cnv_ot2.size())
         #print("Projectionssss",self.projection_shortcut(inputs).size())
-        cnv_ot3 += self.attention_block(cnv_ot3)
+        #print("inputs::::",inputs.size())
+        cnv_ot3 += self.attention_block(inputs)
         if (self.upsample_input == True):
             cnv_ot3 += self.projection_shortcut(inputs)
         else:

@@ -78,11 +78,11 @@ class Cifar(nn.Module):
                 loss = self.loss(outputs,y_train_new)             
                 ### YOUR CODE HERE
                 self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
                 train_loss += loss.item() * self.config.batch_size
                 print("Batch {:d}/{:d} Loss {:.6f}".format(i, num_batches, loss.item()),end='\r',flush=True)
                 #print("Batch {:d}/{:d} Loss {:.6f}".format(i, num_batches, loss), end='\r', flush=True)
-            loss.backward()
-            self.optimizer.step()
             avrg_loss = train_loss/num_samples
             print("Average training loss for the epoch",epoch,"is",avrg_loss)
             avrg_losses.append(avrg_loss)
