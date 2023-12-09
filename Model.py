@@ -24,7 +24,7 @@ class Cifar(nn.Module):
         ### YOUR CODE HERE
         # define cross entropy loss and optimizer
         self.loss = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(self.network.parameters(), lr = 0.1, momentum=0.9, weight_decay=self.config.weight_decay)
+        self.optimizer = optim.SGD(self.network.parameters(), lr = 0.01, momentum=0.9, weight_decay=self.config.weight_decay)
         ### YOUR CODE HERE
     
     def train(self, x_train, y_train, max_epoch):
@@ -32,7 +32,7 @@ class Cifar(nn.Module):
         # Determine how many batches in an epoch
         num_samples = x_train.shape[0]
         num_batches = num_samples // self.config.batch_size
-        learning_rate = 0.1
+        learning_rate = 0.01
         avrg_losses = []
         epoch_loss = []
         print('### Training... ###')
@@ -91,7 +91,7 @@ class Cifar(nn.Module):
             print('Epoch {:d} Loss {:.6f} Duration {:.3f} seconds.'.format(epoch, loss.item(), duration),flush=True)
             if epoch % self.config.save_interval == 0:
                 self.save(epoch)
-        plt.plot(epoch_loss)
+        """plt.plot(epoch_loss)
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.title('Loss after every epoch')
@@ -104,7 +104,7 @@ class Cifar(nn.Module):
         plt.ylabel('Avrg Loss')
         plt.title('Average Loss after every epoch')
         plt.legend()
-        plt.savefig("avrg_#18_drop0.1_loss.png")
+        plt.savefig("avrg_#18_drop0.1_loss.png")"""
             
 
 
