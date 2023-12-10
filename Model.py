@@ -24,7 +24,7 @@ class Cifar(nn.Module):
         ### YOUR CODE HERE
         # define cross entropy loss and optimizer
         self.loss = nn.CrossEntropyLoss()
-        self.optimizer = optim.SGD(self.network.parameters(), lr = 0.01, momentum=0.9, weight_decay=self.config.weight_decay)
+        self.optimizer = optim.SGD(self.network.parameters(), lr = 0.1, momentum=0.9, weight_decay=self.config.weight_decay)
         ### YOUR CODE HERE
     
     def train(self, x_train, y_train, max_epoch):
@@ -32,7 +32,7 @@ class Cifar(nn.Module):
         # Determine how many batches in an epoch
         num_samples = x_train.shape[0]
         num_batches = num_samples // self.config.batch_size
-        learning_rate = 0.01
+        learning_rate = 0.1
         avrg_losses = []
         epoch_loss = []
         print('### Training... ###')
