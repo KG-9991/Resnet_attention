@@ -91,12 +91,12 @@ class Cifar(nn.Module):
             print('Epoch {:d} Loss {:.6f} Duration {:.3f} seconds.'.format(epoch, loss.item(), duration),flush=True)
             if epoch % self.config.save_interval == 0:
                 self.save(epoch)
-        """plt.plot(epoch_loss)
+        plt.plot(epoch_loss)
         plt.xlabel('Epochs')
         plt.ylabel('Loss')
         plt.title('Loss after every epoch')
         plt.legend()
-        plt.savefig("epoch_#18_drop0.1_loss.png")
+        plt.savefig("epoch_#6_attn_loss.png")
         plt.clf()
  
         plt.plot(avrg_losses)
@@ -104,7 +104,7 @@ class Cifar(nn.Module):
         plt.ylabel('Avrg Loss')
         plt.title('Average Loss after every epoch')
         plt.legend()
-        plt.savefig("avrg_#18_drop0.1_loss.png")"""
+        plt.savefig("avrg_#6_attn_loss.png")
             
 
 
