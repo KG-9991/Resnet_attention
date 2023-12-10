@@ -11,7 +11,7 @@ def configure():
     parser = argparse.ArgumentParser()
     ### YOUR CODE HERE
     parser.add_argument("--resnet_version", type=int, default=2, help="the version of ResNet")
-    parser.add_argument("--resnet_size", type=int, default=6, 
+    parser.add_argument("--resnet_size", type=int, default=5, 
                         help='n: the size of ResNet-(6n+2) v1 or ResNet-(9n+2) v2')
     parser.add_argument("--batch_size", type=int, default=128, help='training batch size')
     parser.add_argument("--num_classes", type=int, default=10, help='number of classes')
@@ -19,7 +19,7 @@ def configure():
                         help='save the checkpoint when epoch MOD save_interval == 0')
     parser.add_argument("--first_num_filters", type=int, default=16, help='number of classes')
     parser.add_argument("--weight_decay", type=float, default=2e-4, help='weight decay rate')
-    parser.add_argument("--modeldir", type=str, default='model_attn_#6_v2', help='model directory')
+    parser.add_argument("--modeldir", type=str, default='model_attn_#5_v2', help='model directory')
     ### YOUR CODE HERE
     return parser.parse_args()
 
