@@ -96,7 +96,7 @@ class Cifar(nn.Module):
         plt.ylabel('Loss')
         plt.title('Loss after every epoch')
         plt.legend()
-        plt.savefig("epoch_#6_attn_loss.png")
+        plt.savefig("epoch_#wodrop_attn_loss.png")
         plt.clf()
  
         plt.plot(avrg_losses)
@@ -104,7 +104,7 @@ class Cifar(nn.Module):
         plt.ylabel('Avrg Loss')
         plt.title('Average Loss after every epoch')
         plt.legend()
-        plt.savefig("avrg_#6_attn_loss.png")
+        plt.savefig("avrg_#wodrop_attn_loss.png")
             
 
 
