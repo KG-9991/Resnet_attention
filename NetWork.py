@@ -308,7 +308,7 @@ class bottleneck_block(nn.Module):
         #print("__cvn_ot2__",cnv_ot2.size())
         bn_relu_ot3 = self.bn_relu3(cnv_ot2)
         #print("__bnrelu2__",bn_relu_ot3.size())
-        bn_relu_ot3 = self.dropout(bn_relu_ot3)
+        #bn_relu_ot3 = self.dropout(bn_relu_ot3)
         cnv_ot3 = self.conv3(bn_relu_ot3)
         #print("conv333",cnv_ot3.size())
         #print("__cvn_ot2__",cnv_ot2.size())
@@ -400,7 +400,7 @@ class output_layer(nn.Module):
     
     def forward(self, inputs: Tensor) -> Tensor:
         ### END CODE HERE
-        outputs = self.dropout(inputs)
+        #outputs = self.dropout(inputs)
         outputs = self.avg_pool(inputs)
         #print("output of average pooling",outputs.size())
         #outputs = torch.flatten(outputs,1)
