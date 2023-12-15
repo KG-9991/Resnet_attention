@@ -19,7 +19,7 @@ def configure():
                         help='save the checkpoint when epoch MOD save_interval == 0')
     parser.add_argument("--first_num_filters", type=int, default=16, help='number of classes')
     parser.add_argument("--weight_decay", type=float, default=2e-4, help='weight decay rate')
-    parser.add_argument("--modeldir", type=str, default='model_attn_#5_v2', help='model directory')
+    parser.add_argument("--modeldir", type=str, default='model_attn_#3without_v2', help='model directory')
     ### YOUR CODE HERE
     return parser.parse_args()
 
