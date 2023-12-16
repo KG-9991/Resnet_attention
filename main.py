@@ -15,7 +15,7 @@ def configure():
                         help='n: the size of ResNet-(6n+2) v1 or ResNet-(9n+2) v2')
     parser.add_argument("--batch_size", type=int, default=128, help='training batch size')
     parser.add_argument("--num_classes", type=int, default=10, help='number of classes')
-    parser.add_argument("--save_interval", type=int, default=10, 
+    parser.add_argument("--save_interval", type=int, default=1, 
                         help='save the checkpoint when epoch MOD save_interval == 0')
     parser.add_argument("--first_num_filters", type=int, default=16, help='number of classes')
     parser.add_argument("--weight_decay", type=float, default=2e-4, help='weight decay rate')
@@ -55,7 +55,7 @@ def main(config):
 
     # Third step: after re-training, test your model on the test set.
     # Report testing accuracy in your hard-copy report.
-    model.test_or_validate(x_test, y_test,[170,180,190,200])
+    model.test_or_validate(x_valid, y_valid, [i for i in range(1,201)])
     ### END CODE HERE
 
 if __name__ == "__main__":
