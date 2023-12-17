@@ -58,6 +58,7 @@ def main(config):
     model.test_or_validate(x_valid, y_valid, [170,180,190,200])
     print("test")
     model.test_or_validate(x_test, y_test, [170,180,190,200])
+    model.test_or_validate(x_train, y_train, [170,180,190,200])
 
     ### END CODE HERE
 
