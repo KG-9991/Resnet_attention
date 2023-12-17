@@ -56,6 +56,9 @@ def main(config):
     # Third step: after re-training, test your model on the test set.
     # Report testing accuracy in your hard-copy report.
     model.test_or_validate(x_valid, y_valid, [170,180,190,200])
+    print("test")
+    model.test_or_validate(x_test, y_test, [170,180,190,200])
+
     ### END CODE HERE
 
 if __name__ == "__main__":
