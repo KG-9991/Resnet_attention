@@ -51,11 +51,11 @@ def main(config):
 
     # Second step: with hyperparameters determined in the first run, re-train
     # your model on the original train set.
-    model.train(x_train, y_train, 200)
+    #model.train(x_train, y_train, 200)
 
     # Third step: after re-training, test your model on the test set.
     # Report testing accuracy in your hard-copy report.
-    model.test_or_validate(x_valid, y_valid, [i for i in range(1,201)])
+    model.test_or_validate(x_valid, y_valid, [170,180,190,200])
     ### END CODE HERE
 
 if __name__ == "__main__":
